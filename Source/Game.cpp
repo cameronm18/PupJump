@@ -4,9 +4,9 @@
 #include "TextRenderer.h"
 
 
-// Initial size of the player paddle
+// Initial size of the player
 const glm::vec2 PLAYER_SIZE(60.0f, 100.0f);
-// Initial velocity of the player paddle
+// Initial velocity of the player
 const float PLAYER_VELOCITY(500.0f);
 // Initial velocity of the Ball
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
@@ -51,14 +51,14 @@ Game::~Game()
 
     if (highScore < totalBounces) //set new highschore before program shuts down
     {
-        SaveGame::Save("C:/Dev/Projects/PupperJump/Data/GameData.sav", totalBounces);
+        SaveGame::Save("Data/GameData.sav", totalBounces);
     }
 }
 
 void Game::Init()
 {
     // load shaders
-    ResourceManager::LoadShader("C:/Dev/Projects/PupperJump/Shaders/sprite.vs", "C:/Dev/Projects/PupperJump/Shaders/sprite.frag", nullptr, "sprite");
+    ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.frag", nullptr, "sprite");
     // configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width), static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
@@ -66,17 +66,17 @@ void Game::Init()
     // set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     // load textures
-    ResourceManager::LoadTexture("C:/Dev/Projects/PupperJump/Images/awesomeface.png", true, "face");
-    ResourceManager::LoadTexture("C:/Dev/Projects/PupperJump/Images/background.jpg", false, "background");
-    ResourceManager::LoadTexture("C:/Dev/Projects/PupperJump/Images/sushi.png", true, "paddle");
+    ResourceManager::LoadTexture("Images/awesomeface.png", true, "face");
+    ResourceManager::LoadTexture("Images/background.jpg", false, "background");
+    ResourceManager::LoadTexture("Images/sushi.png", true, "player");
     //create text renderer object and load fonts
     Text = new TextRenderer(this->Width, this->Height);
-    Text->Load("C:/Dev/Projects/PupperJump/Fonts/ocraext.TTF", 24);
+    Text->Load("Fonts/ocraext.TTF", 24);
     //check high score from save file
-    highScore = SaveGame::Load("C:/Dev/Projects/PupperJump/Data/GameData.sav");
+    highScore = SaveGame::Load("Data/GameData.sav");
     // configure game objects
     glm::vec2 playerPos = glm::vec2(this->Width / 2.0f, PLAYER_SIZE.y -200);
-    Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
+    Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("player"));
     //instanciate balls to begin game
     this->AddBall(glm::vec2(std::rand() % 200 + 1));
     this->AddBall(glm::vec2(std::rand() % 400 + 1));
@@ -219,7 +219,7 @@ void Game::ResetPlayer()
     if (totalBounces > highScore) // set new high score
     {
         highScore = totalBounces;
-        SaveGame::Save("C:/Dev/Projects/PupperJump/Data/GameData.sav", totalBounces);
+        SaveGame::Save("Data/GameData.sav", totalBounces);
 
     }
 
@@ -330,8 +330,6 @@ void Game::ProcessCollisions()
              Balls[i]->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
              Balls[i]->Velocity.y = -Balls[i]->Velocity.y;
              Balls[i]->Velocity.x = -Balls[i]->Velocity.x;
-
-             // fix sticky paddle
              Balls[i]->Velocity.y = -1.0f * abs(Balls[i]->Velocity.y);
             
         }

@@ -19,7 +19,7 @@ Game PupJump(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 struct { char mychar; int myint; } TestStruct;
 
-int main(int argc, char* argv[])
+int WinMain(int argc, char* argv[])
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
