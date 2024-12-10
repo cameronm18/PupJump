@@ -13,7 +13,7 @@
 TextRenderer::TextRenderer(unsigned int width, unsigned int height)
 {
     // load and configure shader
-    this->TextShader = ResourceManager::LoadShader("C:/Dev/Projects/PupperJump/Shaders/text.vs", "C:/Dev/Projects/PupperJump/Shaders/text.frag", nullptr, "text");
+    this->TextShader = ResourceManager::LoadShader("Shaders/text.vs", "Shaders/text.frag", nullptr, "text");
     this->TextShader.SetMatrix4("projection", glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f), true);
     this->TextShader.SetInteger("text", 0);
     // configure VAO/VBO for texture quads
